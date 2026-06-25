@@ -151,7 +151,7 @@
     }
     .envelope-stage.is-opening .wax-seal {
       opacity: 0;
-      transform: translateX(-50%) scale(0.76);
+      transform: translate(-50%, -50%) scale(0.76);
       transition: opacity 320ms ease, transform 320ms ease;
     }
     .envelope-stage.is-opening .envelope::after {
@@ -214,19 +214,26 @@
     }
     .envelope-copy {
       position: absolute;
-      inset: 32% 12% auto;
+      inset: 0;
       z-index: 2;
-      text-align: center;
+      text-align: left;
+      pointer-events: none;
     }
 
     .envelope-title {
-      margin: 0 0 8px;
+      position: absolute;
+      left: 12.5%;
+      top: 31%;
+      margin: 0;
       color: var(--accent-dark);
       font: 700 clamp(1.45rem, 6vw, 2.25rem)/1.1 var(--font-en);
       text-indent: 0;
     }
 
     .envelope-date {
+      position: absolute;
+      right: 10.5%;
+      bottom: 9.5%;
       margin: 0;
       color: var(--soft-ink);
       font: 400 clamp(0.98rem, 3vw, 1.18rem)/1.3 var(--font-en);
@@ -261,7 +268,7 @@
     .wax-seal {
       position: absolute;
       left: 50%;
-      bottom: 21%;
+      top: 50%;
       z-index: 4;
       width: 70px;
       height: 70px;
@@ -271,13 +278,86 @@
       color: #fff8f3;
       font: 700 1.6rem/1 var(--font-en);
       box-shadow: 0 12px 28px rgba(135, 38, 32, 0.28), inset 0 2px 10px rgba(255, 255, 255, 0.22);
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       cursor: pointer;
     }
 
     .wax-seal:focus-visible {
       outline: 3px solid rgba(159, 47, 40, 0.26);
       outline-offset: 4px;
+    }
+    .envelope-gate {
+      position: absolute;
+      left: 50%;
+      bottom: 6.5%;
+      width: min(78%, 360px);
+      transform: translateX(-50%);
+      display: grid;
+      gap: 9px;
+      justify-items: center;
+      pointer-events: auto;
+    }
+
+    .envelope-gate label {
+      color: rgba(111, 83, 61, 0.78);
+      font: 500 clamp(0.76rem, 2.4vw, 0.9rem)/1.35 var(--font-en);
+      letter-spacing: 0.02em;
+      text-indent: 0;
+    }
+
+    .envelope-gate input {
+      width: 100%;
+      height: 42px;
+      border: 1px solid rgba(218, 204, 187, 0.9);
+      border-radius: 999px;
+      background: rgba(255, 253, 249, 0.72);
+      color: var(--accent-dark);
+      font: 500 1rem/1 var(--font-cn);
+      text-align: center;
+      outline: none;
+      box-shadow: inset 0 1px 10px rgba(91, 74, 55, 0.04);
+      transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+    }
+
+    .envelope-gate input:focus {
+      border-color: rgba(157, 124, 95, 0.52);
+      background: rgba(255, 253, 249, 0.94);
+      box-shadow: 0 0 0 4px rgba(157, 124, 95, 0.08), inset 0 1px 10px rgba(91, 74, 55, 0.04);
+    }
+
+    .envelope-gate-note {
+      min-height: 1.2em;
+      margin: 0;
+      color: rgba(159, 47, 40, 0.62);
+      font: 500 0.78rem/1.2 var(--font-cn);
+      text-indent: 0;
+      opacity: 0;
+      transition: opacity 180ms ease;
+    }
+
+    .envelope-gate-note.is-visible {
+      opacity: 1;
+    }
+
+    .envelope-gate.is-unlocked input {
+      border-color: rgba(157, 124, 95, 0.42);
+    }
+
+    .wax-seal:disabled {
+      cursor: default;
+      filter: saturate(0.78);
+      opacity: 0.72;
+      box-shadow: 0 10px 24px rgba(135, 38, 32, 0.18), inset 0 2px 10px rgba(255, 255, 255, 0.18);
+    }
+
+    .envelope.is-gate-error {
+      animation: gateNudge 260ms ease;
+    }
+
+    @keyframes gateNudge {
+      0%, 100% { transform: translateX(0); }
+      30% { transform: translateX(-4px); }
+      65% { transform: translateX(4px); }
     }
     .page {
       width: min(100%, 960px);
@@ -534,7 +614,7 @@
       color: rgba(111, 83, 61, 0.28);
       font-size: 0.8rem;
       letter-spacing: 0.32em;
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       white-space: nowrap;
     }
     .opening,
@@ -866,8 +946,13 @@
       <div class="envelope-copy">
         <p class="envelope-title">To <span class="latin-word">Jiniverse</span></p>
         <p class="envelope-date">2026.6.24</p>
+        <div class="envelope-gate" id="envelopeGate">
+          <label for="nameGate">Please type your beautiful Chinese name to unfold the letter</label>
+          <input id="nameGate" type="text" autocomplete="off" inputmode="text" aria-describedby="nameGateNote">
+          <p class="envelope-gate-note" id="nameGateNote" aria-live="polite">名字对上了，蜡封就会打开。</p>
+        </div>
       </div>
-      <button class="wax-seal" id="openLetter" type="button" aria-label="点击蜡封打开信封">J</button>
+      <button class="wax-seal" id="openLetter" type="button" aria-label="点击蜡封打开信封" disabled>J</button>
     </div>
   </div>
   <main class="page">
@@ -1030,8 +1115,37 @@
     });
     const envelopeStage = document.getElementById("envelopeStage");
     const openLetter = document.getElementById("openLetter");
+    const envelope = document.querySelector(".envelope");
+    const envelopeGate = document.getElementById("envelopeGate");
+    const nameGate = document.getElementById("nameGate");
+    const nameGateNote = document.getElementById("nameGateNote");
+    const letterNames = ["谭金贝"];
+
+    const normalizeName = (value) => value.replace(/[\s　]/g, "");
+    const updateEnvelopeGate = () => {
+      const unlocked = letterNames.includes(normalizeName(nameGate.value));
+      openLetter.disabled = !unlocked;
+      envelopeGate.classList.toggle("is-unlocked", unlocked);
+      nameGateNote.classList.toggle("is-visible", nameGate.value.length > 0 && !unlocked);
+      return unlocked;
+    };
+
+    nameGate.addEventListener("input", updateEnvelopeGate);
+    nameGate.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        openLetter.click();
+      }
+    });
 
     openLetter.addEventListener("click", () => {
+      if (!updateEnvelopeGate()) {
+        envelope.classList.remove("is-gate-error");
+        void envelope.offsetWidth;
+        envelope.classList.add("is-gate-error");
+        nameGate.focus();
+        return;
+      }
       envelopeStage.classList.add("is-opening");
       window.setTimeout(() => {
         envelopeStage.classList.add("is-letter-out");
@@ -1179,6 +1293,13 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
