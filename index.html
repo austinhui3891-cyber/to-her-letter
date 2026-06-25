@@ -285,8 +285,8 @@
 
     .wax-seal-icon {
       display: block;
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       margin: 0 auto;
       opacity: 0.9;
       filter: drop-shadow(0 1px 1px rgba(90, 36, 31, 0.16));
@@ -903,10 +903,15 @@
       }
 
       .wax-seal {
-        width: 62px;
-        height: 62px;
+        width: 48px;
+        height: 48px;
         top: 48%;
-        font-size: 1.42rem;
+        font-size: 1.24rem;
+      }
+
+      .wax-seal-icon {
+        width: 24px;
+        height: 24px;
       }
 
       .envelope-gate {
@@ -1219,6 +1224,8 @@
         nameGate.focus();
         return;
       }
+      nameGate.blur();
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       envelopeStage.classList.add("is-opening");
       window.setTimeout(() => {
         envelopeStage.classList.add("is-letter-out");
@@ -1226,6 +1233,10 @@
       window.setTimeout(() => {
         document.body.classList.add("envelope-open");
         envelopeStage.classList.add("is-hidden");
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.setTimeout(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }), 80);
       }, 1450);
     });
     const audio = document.getElementById("bgm");
@@ -1366,6 +1377,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
