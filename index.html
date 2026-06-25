@@ -1,9 +1,10 @@
 ﻿<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="notranslate" translate="no">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#fffdf9">
+  <meta name="google" content="notranslate">
   <title>To Jiniverse</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -223,7 +224,7 @@
     .envelope-title {
       position: absolute;
       left: 12.5%;
-      top: 31%;
+      top: 27%;
       margin: 0;
       color: var(--accent-dark);
       font: 700 clamp(1.45rem, 6vw, 2.25rem)/1.1 var(--font-en);
@@ -232,8 +233,8 @@
 
     .envelope-date {
       position: absolute;
-      right: 10.5%;
-      bottom: 9.5%;
+      right: 9%;
+      bottom: 4.2%;
       margin: 0;
       color: var(--soft-ink);
       font: 400 clamp(0.98rem, 3vw, 1.18rem)/1.3 var(--font-en);
@@ -282,6 +283,17 @@
       cursor: pointer;
     }
 
+    .wax-seal img {
+      display: block;
+      width: 36px;
+      height: 36px;
+      margin: 0 auto;
+      object-fit: contain;
+      opacity: 0.9;
+      filter: drop-shadow(0 1px 1px rgba(90, 36, 31, 0.16));
+      pointer-events: none;
+    }
+
     .wax-seal:focus-visible {
       outline: 3px solid rgba(159, 47, 40, 0.26);
       outline-offset: 4px;
@@ -289,23 +301,28 @@
     .envelope-gate {
       position: absolute;
       left: 50%;
-      bottom: 6.5%;
-      width: min(78%, 360px);
+      bottom: 8.2%;
+      width: min(58%, 340px);
       transform: translateX(-50%);
       display: grid;
-      gap: 9px;
+      gap: 8px;
       justify-items: center;
       pointer-events: auto;
     }
 
     .envelope-gate label {
       color: rgba(111, 83, 61, 0.78);
-      font: 500 clamp(0.76rem, 2.4vw, 0.9rem)/1.35 var(--font-en);
+      order: 2;
+      font: 500 clamp(0.68rem, 1.8vw, 0.78rem)/1.25 var(--font-en);
+      max-width: 100%;
       letter-spacing: 0.02em;
+      text-align: center;
+      white-space: nowrap;
       text-indent: 0;
     }
 
     .envelope-gate input {
+      order: 1;
       width: 100%;
       height: 42px;
       border: 1px solid rgba(218, 204, 187, 0.9);
@@ -329,7 +346,8 @@
       min-height: 1.2em;
       margin: 0;
       color: rgba(159, 47, 40, 0.62);
-      font: 500 0.78rem/1.2 var(--font-cn);
+      order: 3;
+      font: 500 0.72rem/1.2 var(--font-cn);
       text-indent: 0;
       opacity: 0;
       transition: opacity 180ms ease;
@@ -863,6 +881,62 @@
       }
     }
     @media (max-width: 760px) {
+
+      .envelope-stage {
+        padding: max(18px, env(safe-area-inset-top)) 16px max(18px, env(safe-area-inset-bottom));
+        align-items: center;
+      }
+
+      .envelope {
+        width: min(92vw, 420px);
+        border-radius: 14px;
+      }
+
+      .envelope-flower {
+        top: 16px;
+        transform: translateX(-50%) scale(0.88);
+      }
+
+      .envelope-title {
+        left: 12%;
+        top: 25%;
+        font-size: clamp(1.55rem, 8vw, 2.05rem);
+      }
+
+      .wax-seal {
+        width: 62px;
+        height: 62px;
+        top: 48%;
+        font-size: 1.42rem;
+      }
+
+      .envelope-gate {
+        bottom: 6.6%;
+        width: min(70%, 300px);
+        gap: 6px;
+      }
+
+      .envelope-gate label {
+        max-width: 100%;
+        font-size: clamp(0.54rem, 2.35vw, 0.7rem);
+        line-height: 1.18;
+        text-align: center;
+      }
+
+      .envelope-gate input {
+        height: 38px;
+      }
+
+      .envelope-gate-note {
+        font-size: 0.72rem;
+      }
+
+      .envelope-date {
+        right: 8.5%;
+        bottom: 3.2%;
+        font-size: clamp(0.84rem, 4vw, 1rem);
+      }
+
       .page {
         padding: 46px 18px 64px;
       }
@@ -952,7 +1026,7 @@
           <p class="envelope-gate-note" id="nameGateNote" aria-live="polite">名字对上了，蜡封就会打开。</p>
         </div>
       </div>
-      <button class="wax-seal" id="openLetter" type="button" aria-label="点击蜡封打开信封" disabled>J</button>
+      <button class="wax-seal" id="openLetter" type="button" aria-label="点击蜡封打开信封" disabled><img src="./信封带圈.svg" alt="" aria-hidden="true"></button>
     </div>
   </div>
   <main class="page">
@@ -1293,6 +1367,16 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
 
